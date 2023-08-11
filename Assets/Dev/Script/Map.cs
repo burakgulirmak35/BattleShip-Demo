@@ -5,10 +5,10 @@ using UnityEngine.Tilemaps;
 
 public enum ShipType
 {
-    None,
     Scout,
     Cruiser,
-    Carrier
+    Carrier,
+    None,
 }
 
 public enum Marker
@@ -18,7 +18,7 @@ public enum Marker
     Miss
 }
 
-enum GameMode
+public enum GameMode
 {
     Disabled,
     Placement,
@@ -27,12 +27,15 @@ enum GameMode
 
 public class Map : MonoBehaviour
 {
-    [SerializeField] private GameController controller;
+    public static Map Instance { get; private set; }
+
     [SerializeField] private Tilemap cursorLayer;
     [SerializeField] private Tilemap fleetLayer;
-    [SerializeField] private Tilemap debugLayer;
     [SerializeField] private Tilemap markerLayer;
-    [SerializeField] private Tile[] cursorTiles;
+    [Space]
+    [SerializeField] private Tile[] markers;
+    [SerializeField] private BattleShip[] battleShip;
+    [Space]
     [SerializeField] private Tile cursorTile;
     [SerializeField] private int size = 8;
 
@@ -44,8 +47,9 @@ public class Map : MonoBehaviour
 
     private void Start()
     {
-        controller = FindObjectOfType<GameController>();
+        Instance = this;
         grid = GetComponent<Grid>();
+        Camera.main.transform.position = new Vector3Int(size / 2, size, -10);
         SetPlacementMode();
     }
 
@@ -60,6 +64,8 @@ public class Map : MonoBehaviour
 
         cursorLayer.ClearAllTiles();
         cursorLayer.SetTile(coordinate, cursorTile);
+
+
     }
 
     private void OnMouseDown()
@@ -85,7 +91,7 @@ public class Map : MonoBehaviour
         cursorLayer.ClearAllTiles();
     }
 
-    private void SetPlacementMode()
+    public void SetPlacementMode()
     {
         gameMode = GameMode.Placement;
         minCoordinate = new Vector3Int(0, 0, 0);
@@ -95,7 +101,7 @@ public class Map : MonoBehaviour
     private void SetAttackMode()
     {
         gameMode = GameMode.Attack;
-        cursorTile = cursorTiles[(int)Marker.Target];
+        cursorTile = markers[(int)Marker.Target];
         minCoordinate = new Vector3Int(0, size, 0);
         maxCoordinate = new Vector3Int(size - 1, size + size - 1, 0);
     }
@@ -113,24 +119,19 @@ public class Map : MonoBehaviour
             coordinate += new Vector3Int(0, size, 0); // offset position
         }
 
-        markerLayer.SetTile(coordinate, cursorTiles[(int)marker]);
+        markerLayer.SetTile(coordinate, markers[(int)marker]);
     }
 
     private void SetShipCursor(ShipType shipType, bool horizontal)
     {
-        int index = ((int)shipType - 1) * 2 + (horizontal ? 0 : 1);
-        cursorTile = cursorTiles[index];
-    }
-
-    private void SetDebugTile(Vector3Int coordinate, Tile tile)
-    {
-        debugLayer.SetTile(coordinate, tile);
+        int index = (int)shipType;
+        cursorTile = battleShip[index].shipTile[horizontal ? 0 : 1];
     }
 
     private void SetShip(ShipType shipType, Vector3Int coordinate, bool horizontal)
     {
-        int index = ((int)shipType - 1) * 2 + (horizontal ? 0 : 1);
-        Tile tile = cursorTiles[index];
+        int index = (int)shipType;
+        Tile tile = battleShip[index].shipTile[horizontal ? 0 : 1];
         fleetLayer.SetTile(coordinate, tile);
     }
 }

@@ -49,7 +49,7 @@ public class Map : MonoBehaviour
         SetPlacementMode();
     }
 
-    private Update()
+    private void Update()
     {
         if (gameMode.Equals(GameMode.Disabled)) return;
 

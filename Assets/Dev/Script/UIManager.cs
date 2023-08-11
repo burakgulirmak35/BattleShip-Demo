@@ -8,8 +8,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
-    private TextMeshProUGUI txt_Message;
-    private Button btn_Rotate;
+    [SerializeField] private TextMeshProUGUI txt_Message;
+    [SerializeField] private Button btn_Rotate;
 
     private void Awake()
     {

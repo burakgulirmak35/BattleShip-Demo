@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cac6e5fb7204f8549837e6936c73617a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1abda77c1c8631f48b6725dfd1c02372, type: 3}
   m_Name: Cruiser
   m_EditorClassIdentifier: 
-  shipTile:
+  ship:
   - {fileID: 11400000, guid: 59478ced59ae2482fb820c7d8aedf20a, type: 2}
   - {fileID: 11400000, guid: 9425be6414033411fa8010675172b271, type: 2}

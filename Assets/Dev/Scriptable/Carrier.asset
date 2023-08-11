@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cac6e5fb7204f8549837e6936c73617a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1abda77c1c8631f48b6725dfd1c02372, type: 3}
   m_Name: Carrier
   m_EditorClassIdentifier: 
-  shipTile:
+  ship:
   - {fileID: 11400000, guid: 94731bc2ee8f847a2b34f70f55d40eed, type: 2}
   - {fileID: 11400000, guid: 1f0942627ce3c4890883edc39831d785, type: 2}

@@ -5,4 +5,5 @@ using UnityEngine.Tilemaps;
 public class BattleShipSO : ScriptableObject
 {
     public Tile[] ship;
+    public int ShipSize;
 }

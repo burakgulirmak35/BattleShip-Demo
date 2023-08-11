@@ -15,3 +15,4 @@ MonoBehaviour:
   ship:
   - {fileID: 11400000, guid: 59478ced59ae2482fb820c7d8aedf20a, type: 2}
   - {fileID: 11400000, guid: 9425be6414033411fa8010675172b271, type: 2}
+  ShipSize: 3

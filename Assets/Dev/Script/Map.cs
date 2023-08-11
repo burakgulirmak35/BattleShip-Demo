@@ -29,7 +29,7 @@ public class Map : MonoBehaviour
     [SerializeField] private Tile cursorTile;
     [SerializeField] private int size = 8;
     [Space]
-    [SerializeField] private BattleShipSO currentBattleShip;
+    [SerializeField] public BattleShipSO currentBattleShip;
     private MapState mapState;
     private Grid grid;
     private Vector3Int minCoordinate;
@@ -58,7 +58,8 @@ public class Map : MonoBehaviour
             switch (mapState)
             {
                 case MapState.Placement:
-                    PlaceShip(coordinate, false);
+                    //SetShip(coordinate, false);
+                    GameController.Instance.PlaceShip(coordinate);
                     break;
                 case MapState.Attack:
                     SetMarker(coordinate - new Vector3Int(0, size, 0), Marker.Hit, true);
@@ -100,7 +101,7 @@ public class Map : MonoBehaviour
         currentBattleShip = battleShipSO;
     }
 
-    private void PlaceShip(Vector3Int coordinate, bool horizontal)
+    public void SetShip(Vector3Int coordinate, bool horizontal)
     {
         Tile tile = currentBattleShip.ship[horizontal ? 0 : 1];
         fleetLayer.SetTile(coordinate, tile);

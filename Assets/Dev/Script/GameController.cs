@@ -10,15 +10,16 @@ public class GameController : MonoBehaviour
     {
         Placement,
         Battle,
+        EnemyTurn,
         GameOver
     }
     [SerializeField] private BattleShipSO[] battleShipsSO;
     [SerializeField] private int mapSize;
 
     private GameState gameState;
-    private int placedShipsCount;
+    private int ShipID;
     private int cellCount;
-    private int[] placement;
+    private int[,] placement;
 
     private void Awake()
     {
@@ -33,24 +34,17 @@ public class GameController : MonoBehaviour
         UIManager.Instance.Rotate += Event_RotateShip;
 
         cellCount = mapSize * mapSize;
-        placement = new int[cellCount];
+        placement = new int[mapSize, mapSize];
     }
 
     #region  GameState
     private void BeginShipPlacement()
     {
         gameState = GameState.Placement;
-        placedShipsCount = 0;
+        ShipID = 0;
         Map.Instance.SetMapState(MapState.Placement);
         UpdateCursor();
         UIManager.Instance.MessageText("Place Your Ships");
-    }
-
-    private void WaitForOpponentPlacement()
-    {
-        gameState = GameState.Placement;
-        Map.Instance.SetMapState(MapState.Disabled);
-        UIManager.Instance.MessageText("Enemy Turn");
     }
 
     private void TakeTurn()
@@ -62,7 +56,7 @@ public class GameController : MonoBehaviour
 
     private void EnemyTurn()
     {
-        gameState = GameState.Battle;
+        gameState = GameState.EnemyTurn;
         Map.Instance.SetMapState(MapState.Disabled);
         UIManager.Instance.MessageText("Enemy Turn");
     }
@@ -76,65 +70,72 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region PlaceShip
-    public void PlaceShip(Vector3Int coordinate)
+    public void PlaceShip(Vector3Int coordinate, bool topSide = false)
     {
-        if (!gameState.Equals(GameState.Placement)) { return; }
-
         int size = Map.Instance.GetCurretBattleShip().ShipSize;
         int shipWidth = _placeShipHorizontally ? size : 1;
         int shipHeight = _placeShipHorizontally ? 1 : size;
 
+        if (topSide && (coordinate.x < 0 || coordinate.x + (shipWidth - 1) >= mapSize || coordinate.y - (shipHeight - 1) < mapSize / 2))
+        {
+            return;
+        }
         if (coordinate.x < 0 || coordinate.x + (shipWidth - 1) >= mapSize || coordinate.y - (shipHeight - 1) < 0)
         {
             return;
         }
+
 
         for (int i = 0; i < size; i++)
         {
             if (PlaceShipHorizontally)
             {
                 Vector3Int checkCorrdinate = coordinate + new Vector3Int(i, 0, 0);
-                if (!SetPlacementCell(checkCorrdinate, true)) { return; }
+                if (!isEmptyCell(checkCorrdinate)) { return; }
             }
             else
             {
                 Vector3Int checkCorrdinate = coordinate + new Vector3Int(0, -i, 0);
-                if (!SetPlacementCell(checkCorrdinate, true)) { return; }
+                if (!isEmptyCell(checkCorrdinate)) { return; }
             }
         }
         // gemiyi yerlestirebiliriz
 
+        ShipID++;
         for (int i = 0; i < size; i++)
         {
             if (PlaceShipHorizontally)
             {
-                SetPlacementCell(coordinate + new Vector3Int(i, 0, 0));
+                SetCell(coordinate + new Vector3Int(i, 0, 0));
             }
             else
             {
-                SetPlacementCell(coordinate + new Vector3Int(0, -i, 0));
+                SetCell(coordinate + new Vector3Int(0, -i, 0));
             }
         }
 
         Map.Instance.SetShip(coordinate, _placeShipHorizontally);
-        placedShipsCount++;
-        if (placedShipsCount >= battleShipsSO.Length)
-        {
-            TakeTurn();
-            return;
-        }
         UpdateCursor();
     }
 
-    private bool SetPlacementCell(Vector3Int coordinate, bool testOnly = false)
+    public void CheckReady()
     {
-        int cellIndex = coordinate.y * mapSize + coordinate.x;
+        if (ShipID >= battleShipsSO.Length)
+        {
+            PlaceEnemyShips();
+            TakeTurn();
+        }
+    }
 
-        if (cellIndex < 0 || cellIndex >= cellCount) return false;
-        if (placement[cellIndex] > 0) return false;
-        if (testOnly) return true;
-        placement[cellIndex] = (int)placedShipsCount;
+    private bool isEmptyCell(Vector3Int coordinate)
+    {
+        if (placement[coordinate.x, coordinate.y] > 0) { return false; }
         return true;
+    }
+
+    private void SetCell(Vector3Int coordinate)
+    {
+        placement[coordinate.x, coordinate.y] = (int)ShipID;
     }
     #endregion
 
@@ -147,12 +148,39 @@ public class GameController : MonoBehaviour
     }
     private void UpdateCursor()
     {
-        Map.Instance.SetShipCursor(battleShipsSO[placedShipsCount], PlaceShipHorizontally);
+        if (ShipID < battleShipsSO.Length)
+            Map.Instance.SetShipCursor(battleShipsSO[ShipID], PlaceShipHorizontally);
     }
     private void Event_RotateShip(object sender, System.EventArgs e)
     {
         if (gameState.Equals(GameState.Placement))
             PlaceShipHorizontally = !PlaceShipHorizontally;
     }
+    #endregion
+
+    #region Enemy
+
+    private void PlaceEnemyShips()
+    {
+        ShipID = 0;
+        EnemyTurn();
+        UpdateCursor();
+
+        int i = 0;
+        while (ShipID < battleShipsSO.Length)
+        {
+            PlaceShipHorizontally = Random.value > 0.5f;
+            Vector3Int randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(mapSize / 2, mapSize), 0);
+            PlaceShip(randomCell);
+
+            i++;
+            if (i > 20)
+            {
+                return;
+            }
+        }
+
+    }
+
     #endregion
 }

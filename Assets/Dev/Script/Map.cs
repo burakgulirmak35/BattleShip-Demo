@@ -65,6 +65,7 @@ public class Map : MonoBehaviour
             {
                 case MapState.Placement:
                     GameController.Instance.PlaceShip(coordinate);
+                    GameController.Instance.CheckReady();
                     break;
                 case MapState.Attack:
                     SetMarker(coordinate - new Vector3Int(0, mapSize, 0), Marker.Hit, true);

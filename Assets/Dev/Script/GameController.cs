@@ -18,7 +18,6 @@ public class GameController : MonoBehaviour
 
     private GameState gameState;
     private int ShipID;
-    private int cellCount;
     private int[,] placement;
 
     private void Awake()
@@ -32,8 +31,6 @@ public class GameController : MonoBehaviour
         BeginShipPlacement();
 
         UIManager.Instance.Rotate += Event_RotateShip;
-
-        cellCount = mapSize * mapSize;
         placement = new int[mapSize, mapSize];
     }
 
@@ -84,7 +81,6 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-
 
         for (int i = 0; i < size; i++)
         {

@@ -34,8 +34,6 @@ public class GameController : MonoBehaviour
 
         cellCount = mapSize * mapSize;
         placement = new int[cellCount];
-
-
     }
 
     #region  GameState
@@ -135,8 +133,6 @@ public class GameController : MonoBehaviour
         if (cellIndex < 0 || cellIndex >= cellCount) return false;
         if (placement[cellIndex] > 0) return false;
         if (testOnly) return true;
-
-
         placement[cellIndex] = (int)placedShipsCount;
         return true;
     }

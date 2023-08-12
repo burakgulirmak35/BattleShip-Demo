@@ -86,12 +86,12 @@ public class Map : MonoBehaviour
                 break;
             case MapState.Placement:
                 minCoordinate = new Vector3Int(0, 0, 0);
-                maxCoordinate = new Vector3Int(mapSize - 1, mapSize - 1, 0);
+                maxCoordinate = new Vector3Int(mapSize - 1, mapSize / 2 - 1, 0);
                 break;
             case MapState.Attack:
                 cursorTile = markers[(int)Marker.Target];
-                minCoordinate = new Vector3Int(0, mapSize, 0);
-                maxCoordinate = new Vector3Int(mapSize - 1, mapSize + mapSize - 1, 0);
+                minCoordinate = new Vector3Int(0, mapSize / 2, 0);
+                maxCoordinate = new Vector3Int(mapSize - 1, mapSize - 1, 0);
                 break;
             default:
                 break;

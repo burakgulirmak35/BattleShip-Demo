@@ -27,7 +27,7 @@ public class Map : MonoBehaviour
     [Space]
     [SerializeField] public Tile[] markers;
     private Tile cursorTile;
-    private int mapSize = 8;
+    private int mapSize;
     [Space]
     private BattleShipSO currentBattleShip;
     private MapState mapState;
@@ -39,6 +39,12 @@ public class Map : MonoBehaviour
     {
         Instance = this;
         grid = GetComponent<Grid>();
+
+    }
+
+    private void Start()
+    {
+        mapSize = GameController.Instance.GetMapSize();
         Camera.main.transform.position = new Vector3Int(mapSize / 2, mapSize, -10);
     }
 
@@ -123,11 +129,6 @@ public class Map : MonoBehaviour
         markerLayer.SetTile(coordinate, markers[(int)marker]);
     }
     #endregion
-
-    public int GetMapSize()
-    {
-        return mapSize;
-    }
 
     public BattleShipSO GetCurretBattleShip()
     {

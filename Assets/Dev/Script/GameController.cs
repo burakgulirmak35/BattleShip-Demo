@@ -13,11 +13,11 @@ public class GameController : MonoBehaviour
         GameOver
     }
     [SerializeField] private BattleShipSO[] battleShipsSO;
+    [SerializeField] private int mapSize;
 
     private GameState gameState;
     private int placedShipsCount;
     private int cellCount;
-    private int mapSize;
     private int[] placement;
 
     private void Awake()
@@ -30,7 +30,6 @@ public class GameController : MonoBehaviour
         BeginShipPlacement();
         UIManager.Instance.Rotate += Event_RotateShip;
 
-        mapSize = Map.Instance.GetMapSize();
         cellCount = mapSize * mapSize;
         placement = new int[cellCount];
     }
@@ -156,5 +155,10 @@ public class GameController : MonoBehaviour
             PlaceShipHorizontally = !PlaceShipHorizontally;
     }
     #endregion
+
+    public int GetMapSize()
+    {
+        return mapSize;
+    }
 
 }

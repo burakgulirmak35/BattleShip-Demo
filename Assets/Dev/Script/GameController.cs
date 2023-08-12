@@ -71,7 +71,6 @@ public class GameController : MonoBehaviour
     }
     #endregion
 
-    #region UIEvents
 
     public void PlaceShip(Vector3Int coordinate)
     {
@@ -86,10 +85,38 @@ public class GameController : MonoBehaviour
             return;
         }
 
+        for (int i = 0; i < size; i++)
+        {
+            if (PlaceShipHorizontally)
+            {
+                Vector3Int checkCorrdinate = coordinate + new Vector3Int(i, 0, 0);
+                if (!SetPlacementCell(checkCorrdinate, true)) { return; }
+            }
+            else
+            {
+                Vector3Int checkCorrdinate = coordinate + new Vector3Int(0, -i, 0);
+                if (!SetPlacementCell(checkCorrdinate, true)) { return; }
+            }
+        }
+        // gemiyi yerlestirebiliriz
+
+        for (int i = 0; i < size; i++)
+        {
+            if (PlaceShipHorizontally)
+            {
+                SetPlacementCell(coordinate + new Vector3Int(i, 0, 0));
+            }
+            else
+            {
+                SetPlacementCell(coordinate + new Vector3Int(0, -i, 0));
+            }
+        }
+
         Map.Instance.SetShip(coordinate, _placeShipHorizontally);
+        placedShipsCount++;
+        UpdateCursor();
     }
 
-    #endregion
     #region SeciliGemi ve Rotasyonu
     private bool _placeShipHorizontally;
     private bool PlaceShipHorizontally
@@ -106,5 +133,17 @@ public class GameController : MonoBehaviour
         PlaceShipHorizontally = !PlaceShipHorizontally;
     }
     #endregion
+
+    private bool SetPlacementCell(Vector3Int coordinate, bool testOnly = false)
+    {
+        int cellIndex = coordinate.y * mapSize + coordinate.x;
+        if (cellIndex < 0 || cellIndex >= cellCount) return false;
+        if (placement[cellIndex] > 0) return false;
+        if (testOnly) return true;
+        placement[cellIndex] = (int)placedShipsCount;
+        return true;
+
+        burada kaldim
+    }
 
 }

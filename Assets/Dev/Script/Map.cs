@@ -26,8 +26,8 @@ public class Map : MonoBehaviour
     [SerializeField] private Tilemap markerLayer;
     [Space]
     [SerializeField] public Tile[] markers;
-    [SerializeField] private Tile cursorTile;
-    [SerializeField] private int size = 8;
+    private Tile cursorTile;
+    private int size = 8;
     [Space]
     [SerializeField] public BattleShipSO currentBattleShip;
     private MapState mapState;
@@ -58,7 +58,6 @@ public class Map : MonoBehaviour
             switch (mapState)
             {
                 case MapState.Placement:
-                    //SetShip(coordinate, false);
                     GameController.Instance.PlaceShip(coordinate);
                     break;
                 case MapState.Attack:

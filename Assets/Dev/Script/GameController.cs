@@ -27,13 +27,15 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        Map.Instance.SetMap(mapSize);
         BeginShipPlacement();
+
         UIManager.Instance.Rotate += Event_RotateShip;
 
         cellCount = mapSize * mapSize;
         placement = new int[cellCount];
 
-        Map.Instance.SetMap(mapSize);
+
     }
 
     #region  GameState

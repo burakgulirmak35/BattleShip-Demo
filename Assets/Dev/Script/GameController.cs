@@ -152,7 +152,8 @@ public class GameController : MonoBehaviour
     }
     private void Event_RotateShip(object sender, System.EventArgs e)
     {
-        PlaceShipHorizontally = !PlaceShipHorizontally;
+        if (gameState.Equals(GameState.Placement))
+            PlaceShipHorizontally = !PlaceShipHorizontally;
     }
     #endregion
 

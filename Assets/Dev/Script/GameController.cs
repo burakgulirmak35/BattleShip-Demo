@@ -159,7 +159,6 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region Enemy
-
     private void PlaceEnemyShips()
     {
         ShipID = 0;
@@ -171,7 +170,7 @@ public class GameController : MonoBehaviour
         {
             PlaceShipHorizontally = Random.value > 0.5f;
             Vector3Int randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(mapSize / 2, mapSize), 0);
-            PlaceShip(randomCell);
+            PlaceShip(randomCell, true);
 
             i++;
             if (i > 20)
@@ -179,8 +178,6 @@ public class GameController : MonoBehaviour
                 return;
             }
         }
-
     }
-
     #endregion
 }

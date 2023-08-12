@@ -45,7 +45,7 @@ public class Map : MonoBehaviour
     public void SetMap(int _mapSize)
     {
         mapSize = _mapSize;
-        Camera.main.transform.position = new Vector3Int(mapSize / 2, mapSize, -10);
+        Camera.main.transform.position = new Vector3Int(mapSize / 2, mapSize / 2, -10);
     }
 
     private void Update()

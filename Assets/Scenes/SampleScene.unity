@@ -171,7 +171,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0a8c92864523e644ebe6194ebef74e9c, type: 2}
   - {fileID: 11400000, guid: efb427934cd88914fa33767b204d9764, type: 2}
   - {fileID: 11400000, guid: 8a817c22457a21b48b3a1c9b30d8ae7d, type: 2}
-  mapSize: 0
+  mapSize: 10
 --- !u!1 &276323658
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +517,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 8, z: -10}
+  m_LocalPosition: {x: 5, y: 5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

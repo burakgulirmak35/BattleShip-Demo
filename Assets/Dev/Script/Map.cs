@@ -27,9 +27,9 @@ public class Map : MonoBehaviour
     [Space]
     [SerializeField] public Tile[] markers;
     private Tile cursorTile;
-    private int size = 8;
+    private int mapSize = 8;
     [Space]
-    [SerializeField] public BattleShipSO currentBattleShip;
+    private BattleShipSO currentBattleShip;
     private MapState mapState;
     private Grid grid;
     private Vector3Int minCoordinate;
@@ -39,7 +39,7 @@ public class Map : MonoBehaviour
     {
         Instance = this;
         grid = GetComponent<Grid>();
-        Camera.main.transform.position = new Vector3Int(size / 2, size, -10);
+        Camera.main.transform.position = new Vector3Int(mapSize / 2, mapSize, -10);
     }
 
     private void Update()
@@ -61,7 +61,7 @@ public class Map : MonoBehaviour
                     GameController.Instance.PlaceShip(coordinate);
                     break;
                 case MapState.Attack:
-                    SetMarker(coordinate - new Vector3Int(0, size, 0), Marker.Hit, true);
+                    SetMarker(coordinate - new Vector3Int(0, mapSize, 0), Marker.Hit, true);
                     break;
                 default:
                     break;
@@ -80,12 +80,12 @@ public class Map : MonoBehaviour
                 break;
             case MapState.Placement:
                 minCoordinate = new Vector3Int(0, 0, 0);
-                maxCoordinate = new Vector3Int(size - 1, size - 1, 0);
+                maxCoordinate = new Vector3Int(mapSize - 1, mapSize - 1, 0);
                 break;
             case MapState.Attack:
                 cursorTile = markers[(int)Marker.Target];
-                minCoordinate = new Vector3Int(0, size, 0);
-                maxCoordinate = new Vector3Int(size - 1, size + size - 1, 0);
+                minCoordinate = new Vector3Int(0, mapSize, 0);
+                maxCoordinate = new Vector3Int(mapSize - 1, mapSize + mapSize - 1, 0);
                 break;
             default:
                 break;
@@ -110,7 +110,7 @@ public class Map : MonoBehaviour
     #region Marker
     private void SetMarker(int index, Marker marker, bool radar)
     {
-        Vector3Int coordinate = new Vector3Int(index % size, Mathf.FloorToInt(index / size), 0);
+        Vector3Int coordinate = new Vector3Int(index % mapSize, Mathf.FloorToInt(index / mapSize), 0);
         SetMarker(coordinate, marker, radar);
     }
 
@@ -118,9 +118,19 @@ public class Map : MonoBehaviour
     {
         if (radar)
         {
-            coordinate += new Vector3Int(0, size, 0); // offset position
+            coordinate += new Vector3Int(0, mapSize, 0); // offset position
         }
         markerLayer.SetTile(coordinate, markers[(int)marker]);
     }
     #endregion
+
+    public int GetMapSize()
+    {
+        return mapSize;
+    }
+
+    public BattleShipSO GetCurretBattleShip()
+    {
+        return currentBattleShip;
+    }
 }

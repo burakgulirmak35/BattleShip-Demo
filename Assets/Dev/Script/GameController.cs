@@ -17,19 +17,22 @@ public class GameController : MonoBehaviour
     private GameState gameState;
     private int placedShipsCount;
     private int cellCount;
-    private int mapSize = 8;
+    private int mapSize;
     private int[] placement;
 
     private void Awake()
     {
         Instance = this;
-        cellCount = mapSize * mapSize;
     }
 
     private void Start()
     {
         BeginShipPlacement();
         UIManager.Instance.Rotate += Event_RotateShip;
+
+        mapSize = Map.Instance.GetMapSize();
+        cellCount = mapSize * mapSize;
+        placement = new int[cellCount];
     }
 
     #region  GameState
@@ -71,14 +74,14 @@ public class GameController : MonoBehaviour
     }
     #endregion
 
-
+    #region PlaceShip
     public void PlaceShip(Vector3Int coordinate)
     {
         if (!gameState.Equals(GameState.Placement)) { return; }
 
-        int size = Map.Instance.currentBattleShip.ShipSize;
-        int shipWidth = shipWidth = _placeShipHorizontally ? size : 1;
-        int shipHeight = shipHeight = _placeShipHorizontally ? 1 : size;
+        int size = Map.Instance.GetCurretBattleShip().ShipSize;
+        int shipWidth = _placeShipHorizontally ? size : 1;
+        int shipHeight = _placeShipHorizontally ? 1 : size;
 
         if (coordinate.x < 0 || coordinate.x + (shipWidth - 1) >= mapSize || coordinate.y - (shipHeight - 1) < 0)
         {
@@ -114,10 +117,29 @@ public class GameController : MonoBehaviour
 
         Map.Instance.SetShip(coordinate, _placeShipHorizontally);
         placedShipsCount++;
+        if (placedShipsCount >= battleShipsSO.Length)
+        {
+            StartTurn();
+            return;
+        }
         UpdateCursor();
     }
 
-    #region SeciliGemi ve Rotasyonu
+    private bool SetPlacementCell(Vector3Int coordinate, bool testOnly = false)
+    {
+        int cellIndex = coordinate.y * mapSize + coordinate.x;
+
+        if (cellIndex < 0 || cellIndex >= cellCount) return false;
+        if (placement[cellIndex] > 0) return false;
+        if (testOnly) return true;
+
+
+        placement[cellIndex] = (int)placedShipsCount;
+        return true;
+    }
+    #endregion
+
+    #region SelectedShip and Rotation
     private bool _placeShipHorizontally;
     private bool PlaceShipHorizontally
     {
@@ -133,17 +155,5 @@ public class GameController : MonoBehaviour
         PlaceShipHorizontally = !PlaceShipHorizontally;
     }
     #endregion
-
-    private bool SetPlacementCell(Vector3Int coordinate, bool testOnly = false)
-    {
-        int cellIndex = coordinate.y * mapSize + coordinate.x;
-        if (cellIndex < 0 || cellIndex >= cellCount) return false;
-        if (placement[cellIndex] > 0) return false;
-        if (testOnly) return true;
-        placement[cellIndex] = (int)placedShipsCount;
-        return true;
-
-        burada kaldim
-    }
 
 }

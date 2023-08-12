@@ -53,14 +53,14 @@ public class GameController : MonoBehaviour
         UIManager.Instance.MessageText("Enemy Turn");
     }
 
-    private void StartTurn()
+    private void TakeTurn()
     {
         gameState = GameState.Battle;
         Map.Instance.SetMapState(MapState.Attack);
         UIManager.Instance.MessageText("Your Turn");
     }
 
-    private void WaitForOpponentTurn()
+    private void EnemyTurn()
     {
         gameState = GameState.Battle;
         Map.Instance.SetMapState(MapState.Disabled);
@@ -120,7 +120,7 @@ public class GameController : MonoBehaviour
         placedShipsCount++;
         if (placedShipsCount >= battleShipsSO.Length)
         {
-            StartTurn();
+            TakeTurn();
             return;
         }
         UpdateCursor();

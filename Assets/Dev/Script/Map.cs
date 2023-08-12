@@ -42,9 +42,9 @@ public class Map : MonoBehaviour
 
     }
 
-    private void Start()
+    public void SetMap(int _mapSize)
     {
-        mapSize = GameController.Instance.GetMapSize();
+        mapSize = _mapSize;
         Camera.main.transform.position = new Vector3Int(mapSize / 2, mapSize, -10);
     }
 

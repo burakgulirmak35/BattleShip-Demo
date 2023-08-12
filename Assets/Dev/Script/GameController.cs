@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour
 
         cellCount = mapSize * mapSize;
         placement = new int[cellCount];
+
+        Map.Instance.SetMap(mapSize);
     }
 
     #region  GameState
@@ -155,10 +157,4 @@ public class GameController : MonoBehaviour
             PlaceShipHorizontally = !PlaceShipHorizontally;
     }
     #endregion
-
-    public int GetMapSize()
-    {
-        return mapSize;
-    }
-
 }

@@ -19,8 +19,8 @@ public class GameController : MonoBehaviour
     private GameState gameState;
     private int ShipID;
     private int[,] placement;
-    private bool[,] shots;
-    private Player[] players;
+    private int[,] shots;
+    private int playerID;
 
     private void Awake()
     {
@@ -34,8 +34,7 @@ public class GameController : MonoBehaviour
 
         UIManager.Instance.Rotate += Event_RotateShip;
         placement = new int[mapSize, mapSize];
-        shots = new bool[mapSize, mapSize];
-        players = new Player[2];
+        shots = new int[mapSize, mapSize];
     }
 
     #region  GameState
@@ -182,8 +181,7 @@ public class GameController : MonoBehaviour
         {
             Map.Instance.SetMarker(coordinate, Marker.Miss);
         }
-        players[0].GetHit(1);
-        shots[coordinate.x, coordinate.y] = true;
+        shots[coordinate.x, coordinate.y] = placement[coordinate.x, coordinate.y];
 
     }
 
@@ -207,29 +205,9 @@ public class GameController : MonoBehaviour
     private void EnemyShoot()
     {
         Vector3Int randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(0, mapSize / 2), 0);
-        if (shots[randomCell.x, randomCell.y]) { EnemyShoot(); return; }
+        if (shots[randomCell.x, randomCell.y] > 0) { EnemyShoot(); return; }
         Shoot(randomCell);
         TakeTurn();
     }
     #endregion
-
-
-    private class Player
-    {
-        private int PlayerHealth;
-
-        public void SetHealth(int amount)
-        {
-            PlayerHealth = amount;
-        }
-
-        public void GetHit(int amount)
-        {
-            PlayerHealth -= amount;
-            if (PlayerHealth <= 0)
-            {
-                GameController.Instance.GameOver();
-            }
-        }
-    }
 }

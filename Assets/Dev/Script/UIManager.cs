@@ -15,7 +15,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button btn_Rotate;
     [SerializeField] private Button btn_Restart;
     [Space]
-    [SerializeField] private TextMeshProUGUI txt_shotCount;
     [SerializeField] private TextMeshProUGUI txt_hitCount;
     [SerializeField] private TextMeshProUGUI txt_missCount;
     [Header("GameOver")]
@@ -36,6 +35,8 @@ public class UIManager : MonoBehaviour
         Instance = this;
         btn_Rotate.onClick.AddListener(BtnRotate);
         btn_Restart.onClick.AddListener(BtnRestart);
+        UpdateText(0, 0);
+        panelGameOver.SetActive(false);
     }
 
     public void MessageText(string _message)
@@ -44,10 +45,14 @@ public class UIManager : MonoBehaviour
         Debug.Log(_message);
     }
 
-    public void EndGame(string _message)
+    public void EndGame(string _message, int _hitCount, int _missCount, string _time)
     {
-        panelGameOver.SetActive(true);
         txt_Winner.text = _message;
+        txt_totalHitCount.text = "HitCount: " + _hitCount.ToString();
+        txt_totalMissCount.text = "MissCount: " + _missCount.ToString();
+        txt_totalShotCount.text = "ShotCount: " + _hitCount + _missCount;
+        txt_time.text = _time;
+        panelGameOver.SetActive(true);
     }
 
     private void BtnRotate()
@@ -58,6 +63,12 @@ public class UIManager : MonoBehaviour
     private void BtnRestart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void UpdateText(int _hitCount, int _missCount)
+    {
+        txt_hitCount.text = "HitCount: " + _hitCount.ToString();
+        txt_missCount.text = "MissCount: " + _missCount.ToString();
     }
 
 

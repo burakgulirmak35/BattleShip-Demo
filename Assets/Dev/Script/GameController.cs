@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     private bool[,] shots;
     private Player[] players;
     private int playerCount = 2;
+    public System.DateTime startTime;
 
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class GameController : MonoBehaviour
         Map.Instance.SetMapState(MapState.Placement);
         UpdateCursor();
         UIManager.Instance.MessageText("Place Your Ships");
+        startTime = System.DateTime.Now;
     }
 
     private void PlayerTurn()
@@ -77,16 +79,21 @@ public class GameController : MonoBehaviour
 
     public void GameOver(int playerID)
     {
+
         gameState = GameState.GameOver;
         Map.Instance.SetMapState(MapState.Disabled);
         UIManager.Instance.MessageText("Game Over");
+
+        System.TimeSpan span = (System.DateTime.Now - startTime);
+        string Time = System.String.Format("{0} min, {1} sec", span.Minutes, span.Seconds);
+
         if (playerID == 1)
         {
-            UIManager.Instance.EndGame("You Win");
+            UIManager.Instance.EndGame("You Win", players[0].GetHitCount(), players[0].GetMissCount(), Time);
         }
         else
         {
-            UIManager.Instance.EndGame("You Lost");
+            UIManager.Instance.EndGame("You Lost", players[0].GetHitCount(), players[0].GetMissCount(), Time);
         }
 
     }
@@ -179,6 +186,8 @@ public class GameController : MonoBehaviour
             Map.Instance.SetMarker(coordinate, Marker.Miss);
             PassTurn(targetPlayerID);
         }
+
+        UIManager.Instance.UpdateText(players[0].GetHitCount(), players[0].GetMissCount());
         shots[coordinate.x, coordinate.y] = true;
     }
 
@@ -282,6 +291,17 @@ public class GameController : MonoBehaviour
         {
             return lostShipCount >= GameController.Instance.battleShipsSO.Length;
         }
+
+        public int GetHitCount()
+        {
+            return hitCount;
+        }
+
+        public int GetMissCount()
+        {
+            return missCount;
+        }
+
 
         private void ReviveShip(int _shipID)
         {

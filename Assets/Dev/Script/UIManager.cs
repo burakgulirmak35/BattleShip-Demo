@@ -44,10 +44,10 @@ public class UIManager : MonoBehaviour
         Debug.Log(_message);
     }
 
-    public void EndGame(string _winner)
+    public void EndGame(string _message)
     {
         panelGameOver.SetActive(true);
-        txt_Winner.text = _winner + "win";
+        txt_Winner.text = _message;
     }
 
     private void BtnRotate()

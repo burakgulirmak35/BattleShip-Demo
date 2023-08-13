@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -117,8 +118,10 @@ public class GameController : MonoBehaviour
                 players[playerID].SetCell(coordinate + new Vector3Int(0, -i, 0), ShipID);
             }
         }
-
-        Map.Instance.SetShip(coordinate, _placeShipHorizontally);
+        if (playerID == 0)
+        {
+            Map.Instance.SetShip(coordinate, _placeShipHorizontally);
+        }
         UpdateCursor();
     }
 
@@ -257,6 +260,12 @@ public class GameController : MonoBehaviour
         public bool isGameOver()
         {
             return lostShipCount >= GameController.Instance.battleShipsSO.Length;
+        }
+
+        private class ShipData
+        {
+            public Vector3Int shipCoordinate;
+            public bool isHorizontally;
         }
 
     }

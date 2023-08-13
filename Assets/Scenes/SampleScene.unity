@@ -4485,7 +4485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
+  m_Color: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 0.078431375}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4945,7 +4945,7 @@ MonoBehaviour:
   txt_missCount: {fileID: 781624826}
   panelGameOver: {fileID: 241858901}
   txt_Winner: {fileID: 1651675376}
-  txt_totalShotCount: {fileID: 637551947}
   txt_totalHitCount: {fileID: 637551947}
   txt_totalMissCount: {fileID: 933014443}
+  txt_totalShotCount: {fileID: 485683708}
   txt_time: {fileID: 1568025254}

@@ -22,9 +22,9 @@ public class UIManager : MonoBehaviour
     [Space]
     [SerializeField] private TextMeshProUGUI txt_Winner;
     [Space]
-    [SerializeField] private TextMeshProUGUI txt_totalShotCount;
     [SerializeField] private TextMeshProUGUI txt_totalHitCount;
     [SerializeField] private TextMeshProUGUI txt_totalMissCount;
+    [SerializeField] private TextMeshProUGUI txt_totalShotCount;
     [Space]
     [SerializeField] private TextMeshProUGUI txt_time;
 

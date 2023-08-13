@@ -19,26 +19,25 @@ public class GameController : MonoBehaviour
     private GameState gameState;
     private int ShipID;
     private bool[,] shots;
-    private Player[] players;
-    private int PlayerID;
+    private Player[] players = new Player[2];
 
     private void Awake()
     {
         Instance = this;
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i] = new Player();
+            players[i].SetPlacemant(mapSize);
+        }
     }
 
     private void Start()
     {
         Map.Instance.SetMap(mapSize);
-        BeginShipPlacement();
         UIManager.Instance.Rotate += Event_RotateShip;
-
         shots = new bool[mapSize, mapSize];
-        players = new Player[2];
-        for (int i = 0; i < players.Length; i++)
-        {
-            players[i].SetPlacemant(mapSize, battleShipsSO);
-        }
+        BeginShipPlacement();
     }
 
     #region  GameState
@@ -153,18 +152,35 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region Shoot
-    public void Shoot(Vector3Int coordinate)
+    public void Shoot(Vector3Int coordinate, int targetPlayerID)
     {
-        if (players[0].isHit(coordinate))
+        if (shots[coordinate.x, coordinate.y]) { UIManager.Instance.MessageText("Buraya zaten attin"); return; }
+        if (players[targetPlayerID].isHit(coordinate))
         {
             Map.Instance.SetMarker(coordinate, Marker.Hit);
+            if (players[targetPlayerID].isGameOver()) { GameOver(); return; }
+            if (targetPlayerID == 1)
+            {
+                TakeTurn();
+            }
+            else
+            {
+                EnemyTurn();
+            }
         }
         else
         {
+            if (targetPlayerID == 1)
+            {
+                EnemyTurn();
+            }
+            else
+            {
+                TakeTurn();
+            }
             Map.Instance.SetMarker(coordinate, Marker.Miss);
         }
         shots[coordinate.x, coordinate.y] = true;
-
     }
 
     #endregion
@@ -179,17 +195,16 @@ public class GameController : MonoBehaviour
         while (ShipID < battleShipsSO.Length)
         {
             PlaceShipHorizontally = Random.value > 0.5f;
-            Vector3Int randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(mapSize / 2, mapSize), 0);
-            PlaceShip(randomCell, 1);
+            Vector3Int _randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(mapSize / 2, mapSize), 0);
+            PlaceShip(_randomCell, 1);
         }
     }
 
     private void EnemyShoot()
     {
-        Vector3Int randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(0, mapSize / 2), 0);
-        if (shots[randomCell.x, randomCell.y]) { EnemyShoot(); return; }
-        Shoot(randomCell);
-        TakeTurn();
+        Vector3Int _randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(0, mapSize / 2), 0);
+        if (shots[_randomCell.x, _randomCell.y]) { EnemyShoot(); return; }
+        Shoot(_randomCell, 0);
     }
     #endregion
 
@@ -197,14 +212,12 @@ public class GameController : MonoBehaviour
     {
         private int[,] placement;
         private int[] hit;
-        private BattleShipSO[] battleShipSO;
+        private int lostShipCount;
 
-
-        public void SetPlacemant(int _mapSize, BattleShipSO[] _battleShipSO)
+        public void SetPlacemant(int _mapSize)
         {
             placement = new int[_mapSize, _mapSize];
-            battleShipSO = _battleShipSO;
-            hit = new int[battleShipSO.Length];
+            hit = new int[GameController.Instance.battleShipsSO.Length];
         }
 
         public bool isEmptyCell(Vector3Int coordinate)
@@ -222,15 +235,16 @@ public class GameController : MonoBehaviour
         {
             if (placement[coordinate.x, coordinate.y] > 0)
             {
-                int _shipID = placement[coordinate.x, coordinate.y];
+                int _shipID = placement[coordinate.x, coordinate.y] - 1;
                 hit[_shipID]++;
-                if (hit[_shipID] < battleShipSO[_shipID].ShipSize)
+                if (hit[_shipID] < GameController.Instance.battleShipsSO[_shipID].ShipSize)
                 {
                     UIManager.Instance.MessageText("Amiral yara aldı");
                 }
                 else
                 {
-                    UIManager.Instance.MessageText(battleShipSO[_shipID].ShipName + " batti");
+                    UIManager.Instance.MessageText(GameController.Instance.battleShipsSO[_shipID].ShipName + " batti");
+                    lostShipCount++;
                 }
                 return true;
             }
@@ -238,6 +252,11 @@ public class GameController : MonoBehaviour
             {
                 return false;
             }
+        }
+
+        public bool isGameOver()
+        {
+            return lostShipCount >= GameController.Instance.battleShipsSO.Length;
         }
 
     }

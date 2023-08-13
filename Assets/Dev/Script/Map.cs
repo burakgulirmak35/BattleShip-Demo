@@ -68,8 +68,7 @@ public class Map : MonoBehaviour
                     GameController.Instance.CheckReady();
                     break;
                 case MapState.Attack:
-                    GameController.Instance.Shoot(coordinate);
-                    GameController.Instance.EnemyTurn();
+                    GameController.Instance.Shoot(coordinate, 1);
                     break;
                 default:
                     break;

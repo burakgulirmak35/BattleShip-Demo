@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
         txt_totalHitCount.text = "HitCount: " + _hitCount.ToString();
         txt_totalMissCount.text = "MissCount: " + _missCount.ToString();
         txt_totalShotCount.text = "ShotCount: " + _hitCount + _missCount;
-        txt_time.text = _time;
+        txt_time.text = "Time: " + _time;
         panelGameOver.SetActive(true);
     }
 

@@ -4945,7 +4945,7 @@ MonoBehaviour:
   txt_missCount: {fileID: 781624826}
   panelGameOver: {fileID: 241858901}
   txt_Winner: {fileID: 1651675376}
+  txt_totalShotCount: {fileID: 485683708}
   txt_totalHitCount: {fileID: 637551947}
   txt_totalMissCount: {fileID: 933014443}
-  txt_totalShotCount: {fileID: 485683708}
   txt_time: {fileID: 1568025254}

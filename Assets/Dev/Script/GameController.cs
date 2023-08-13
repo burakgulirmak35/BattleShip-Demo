@@ -59,21 +59,21 @@ public class GameController : MonoBehaviour
     {
         gameState = GameState.Battle;
         Map.Instance.SetMapState(MapState.Attack);
-        UIManager.Instance.MessageText("Your Turn");
+        // UIManager.Instance.MessageText("Your Turn");
     }
 
     private void EnemyPlacement()
     {
         gameState = GameState.EnemyTurn;
         Map.Instance.SetMapState(MapState.Disabled);
-        UIManager.Instance.MessageText("Enemy Turn");
+        // UIManager.Instance.MessageText("Enemy Turn");
     }
 
     public void EnemyTurn()
     {
         gameState = GameState.EnemyTurn;
         Map.Instance.SetMapState(MapState.Disabled);
-        UIManager.Instance.MessageText("Enemy Turn");
+        // UIManager.Instance.MessageText("Enemy Turn");
         EnemyShoot();
     }
 
@@ -146,6 +146,7 @@ public class GameController : MonoBehaviour
         {
             EnemyPlaceShips();
             PlayerTurn();
+            UIManager.Instance.MessageText("Your Turn");
         }
     }
     #endregion

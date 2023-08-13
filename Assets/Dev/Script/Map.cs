@@ -65,7 +65,6 @@ public class Map : MonoBehaviour
                 oceanLayer.SetTile(new Vector3Int(x, y, 0), oceanTile);
             }
         }
-
     }
 
     public void ReviveArea(Vector3Int _coordinate)

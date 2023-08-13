@@ -159,7 +159,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: scout_v
+      name: Denizalti_v
       rect:
         serializedVersion: 2
         x: 0
@@ -180,7 +180,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cruiser_v
+      name: Firkateyn_v
       rect:
         serializedVersion: 2
         x: 38
@@ -201,7 +201,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: carrier_v
+      name: AmiralKruvazor_v
       rect:
         serializedVersion: 2
         x: 150
@@ -222,7 +222,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: carrier_h
+      name: AmiralKruvazor_h
       rect:
         serializedVersion: 2
         x: 244
@@ -243,7 +243,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cruiser_h
+      name: Firkateyn_h
       rect:
         serializedVersion: 2
         x: 306
@@ -264,7 +264,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: scout_h
+      name: "Denizalt\u0131_h"
       rect:
         serializedVersion: 2
         x: 337
@@ -284,6 +284,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Muhrip_v
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 277
+        width: 32
+        height: 123
+      alignment: 9
+      pivot: {x: 0.5, y: 0.87}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31fe0812950597a4fac902ec7cbfcda7
+      internalID: 332688098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Muhrip_h
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 331
+        width: 125
+        height: 31
+      alignment: 9
+      pivot: {x: 0.12, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2e848e212f0ead488ef179df866d6e3
+      internalID: -716091214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mayin
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 369
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efe1a7d1eb57ee04dae6507b225b4077
+      internalID: -1049445517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -295,12 +358,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      carrier_h: -1686280522751478238
-      carrier_v: -4030252921692450870
-      cruiser_h: 9204135808654416287
-      cruiser_v: 3756452822079432277
-      scout_h: -66049525997918889
-      scout_v: 1357911645972831016
+      AmiralKruvazor_h: -1686280522751478238
+      AmiralKruvazor_v: -4030252921692450870
+      Denizalti_v: 1357911645972831016
+      "Denizalt\u0131_h": -66049525997918889
+      Firkateyn_h: 9204135808654416287
+      Firkateyn_v: 3756452822079432277
+      Mayin: -1049445517
+      Muhrip_h: -716091214
+      Muhrip_v: 332688098
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

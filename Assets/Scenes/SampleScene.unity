@@ -445,8 +445,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleShipsSO:
+  - {fileID: 11400000, guid: 7ff143b44083afe40874115291b49958, type: 2}
   - {fileID: 11400000, guid: 0a8c92864523e644ebe6194ebef74e9c, type: 2}
   - {fileID: 11400000, guid: efb427934cd88914fa33767b204d9764, type: 2}
+  - {fileID: 11400000, guid: bd44afcbf67ad0c4daa6ad2515eff058, type: 2}
   - {fileID: 11400000, guid: 8a817c22457a21b48b3a1c9b30d8ae7d, type: 2}
   mapSize: 10
 --- !u!1 &276323658

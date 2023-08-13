@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1abda77c1c8631f48b6725dfd1c02372, type: 3}
-  m_Name: Scout
+  m_Name: "Denizalt\u0131"
   m_EditorClassIdentifier: 
   ShipName: "Denizalt\u0131"
   ship:

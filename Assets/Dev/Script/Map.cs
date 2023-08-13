@@ -22,10 +22,15 @@ public class Map : MonoBehaviour
     public static Map Instance { get; private set; }
 
     [SerializeField] private Tilemap cursorLayer;
-    [SerializeField] private Tilemap fleetLayer;
     [SerializeField] private Tilemap markerLayer;
+    [SerializeField] private Tilemap radarLayer;
+    [SerializeField] private Tilemap fleetLayer;
+    [SerializeField] private Tilemap oceanLayer;
     [Space]
-    [SerializeField] public Tile[] markers;
+    [SerializeField] private Tile[] markers;
+    [SerializeField] private Tile oceanTile;
+    [SerializeField] private Tile radarTile;
+
     private Tile cursorTile;
     private int mapSize;
     [Space]
@@ -46,6 +51,26 @@ public class Map : MonoBehaviour
     {
         mapSize = _mapSize;
         Camera.main.transform.position = new Vector3Int(mapSize / 2, mapSize / 2, -10);
+        //oceanLayer.ClearAllTiles();
+
+        for (int x = 0; x < mapSize; x++)
+        {
+            for (int y = mapSize / 2; y < mapSize; y++)
+            {
+                radarLayer.SetTile(new Vector3Int(x, y, 0), radarTile);
+            }
+
+            for (int y = 0; y < mapSize; y++)
+            {
+                oceanLayer.SetTile(new Vector3Int(x, y, 0), oceanTile);
+            }
+        }
+
+    }
+
+    public void ReviveArea(Vector3Int _coordinate)
+    {
+        radarLayer.SetTile(_coordinate, null);
     }
 
     private void Update()

@@ -118,10 +118,7 @@ public class GameController : MonoBehaviour
                 players[playerID].SetCell(coordinate + new Vector3Int(0, -i, 0), ShipID);
             }
         }
-        if (playerID == 0)
-        {
-            Map.Instance.SetShip(coordinate, _placeShipHorizontally);
-        }
+        Map.Instance.SetShip(coordinate, _placeShipHorizontally);
         UpdateCursor();
     }
 
@@ -216,11 +213,13 @@ public class GameController : MonoBehaviour
         private int[,] placement;
         private int[] hit;
         private int lostShipCount;
+        private ShipData[] shipData;
 
         public void SetPlacemant(int _mapSize)
         {
             placement = new int[_mapSize, _mapSize];
             hit = new int[GameController.Instance.battleShipsSO.Length];
+            shipData = new ShipData[GameController.Instance.battleShipsSO.Length];
         }
 
         public bool isEmptyCell(Vector3Int coordinate)
@@ -232,6 +231,7 @@ public class GameController : MonoBehaviour
         public void SetCell(Vector3Int coordinate, int ShipID)
         {
             placement[coordinate.x, coordinate.y] = ShipID;
+            shipData[ShipID - 1].shipCoordinate.Add(new Vector3Int(coordinate.x, coordinate.y, 0));
         }
 
         public bool isHit(Vector3Int coordinate)
@@ -248,6 +248,10 @@ public class GameController : MonoBehaviour
                 {
                     UIManager.Instance.MessageText(GameController.Instance.battleShipsSO[_shipID].ShipName + " batti");
                     lostShipCount++;
+                    for (int i = 0; i < shipData[_shipID].shipCoordinate.Count; i++)
+                    {
+                        Map.Instance.ReviveArea(shipData[_shipID].shipCoordinate[i]);
+                    }
                 }
                 return true;
             }
@@ -264,8 +268,7 @@ public class GameController : MonoBehaviour
 
         private class ShipData
         {
-            public Vector3Int shipCoordinate;
-            public bool isHorizontally;
+            public List<Vector3Int> shipCoordinate = new List<Vector3Int>();
         }
 
     }

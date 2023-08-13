@@ -51,7 +51,7 @@ public class Map : MonoBehaviour
     {
         mapSize = _mapSize;
         Camera.main.transform.position = new Vector3Int(mapSize / 2, mapSize / 2, -10);
-        //oceanLayer.ClearAllTiles();
+        oceanLayer.ClearAllTiles();
 
         for (int x = 0; x < mapSize; x++)
         {

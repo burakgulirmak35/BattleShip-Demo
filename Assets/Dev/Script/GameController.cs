@@ -20,21 +20,23 @@ public class GameController : MonoBehaviour
     private GameState gameState;
     private int ShipID;
     private bool[,] shots;
-    private Player[] players = new Player[2];
+    private Player[] players;
+    private int playerCount = 2;
 
     private void Awake()
     {
         Instance = this;
+    }
 
+    private void Start()
+    {
+        players = new Player[playerCount];
         for (int i = 0; i < players.Length; i++)
         {
             players[i] = new Player();
             players[i].SetPlacemant(mapSize);
         }
-    }
 
-    private void Start()
-    {
         Map.Instance.SetMap(mapSize);
         UIManager.Instance.Rotate += Event_RotateShip;
         shots = new bool[mapSize, mapSize];
@@ -159,25 +161,13 @@ public class GameController : MonoBehaviour
         {
             Map.Instance.SetMarker(coordinate, Marker.Hit);
             if (players[targetPlayerID].isGameOver()) { GameOver(); return; }
-            if (targetPlayerID == 1)
-            {
-                TakeTurn();
-            }
-            else
-            {
-                EnemyTurn();
-            }
+            if (targetPlayerID == 1) { TakeTurn(); }
+            else { EnemyTurn(); }
         }
         else
         {
-            if (targetPlayerID == 1)
-            {
-                EnemyTurn();
-            }
-            else
-            {
-                TakeTurn();
-            }
+            if (targetPlayerID == 1) { EnemyTurn(); }
+            else { TakeTurn(); }
             Map.Instance.SetMarker(coordinate, Marker.Miss);
         }
         shots[coordinate.x, coordinate.y] = true;
@@ -213,13 +203,13 @@ public class GameController : MonoBehaviour
         private int[,] placement;
         private int[] hit;
         private int lostShipCount;
-        private ShipData[] shipData;
+        private int mapSize;
 
         public void SetPlacemant(int _mapSize)
         {
+            mapSize = _mapSize;
             placement = new int[_mapSize, _mapSize];
             hit = new int[GameController.Instance.battleShipsSO.Length];
-            shipData = new ShipData[GameController.Instance.battleShipsSO.Length];
         }
 
         public bool isEmptyCell(Vector3Int coordinate)
@@ -231,27 +221,23 @@ public class GameController : MonoBehaviour
         public void SetCell(Vector3Int coordinate, int ShipID)
         {
             placement[coordinate.x, coordinate.y] = ShipID;
-            shipData[ShipID - 1].shipCoordinate.Add(new Vector3Int(coordinate.x, coordinate.y, 0));
         }
 
         public bool isHit(Vector3Int coordinate)
         {
             if (placement[coordinate.x, coordinate.y] > 0)
             {
-                int _shipID = placement[coordinate.x, coordinate.y] - 1;
-                hit[_shipID]++;
-                if (hit[_shipID] < GameController.Instance.battleShipsSO[_shipID].ShipSize)
+                int shipID = placement[coordinate.x, coordinate.y];
+                hit[shipID - 1]++;
+                if (hit[shipID - 1] < GameController.Instance.battleShipsSO[shipID - 1].ShipSize)
                 {
                     UIManager.Instance.MessageText("Amiral yara aldı");
                 }
                 else
                 {
-                    UIManager.Instance.MessageText(GameController.Instance.battleShipsSO[_shipID].ShipName + " batti");
+                    UIManager.Instance.MessageText(GameController.Instance.battleShipsSO[shipID - 1].ShipName + " batti");
                     lostShipCount++;
-                    for (int i = 0; i < shipData[_shipID].shipCoordinate.Count; i++)
-                    {
-                        Map.Instance.ReviveArea(shipData[_shipID].shipCoordinate[i]);
-                    }
+                    ReviveShip(shipID);
                 }
                 return true;
             }
@@ -266,9 +252,18 @@ public class GameController : MonoBehaviour
             return lostShipCount >= GameController.Instance.battleShipsSO.Length;
         }
 
-        private class ShipData
+        private void ReviveShip(int _shipID)
         {
-            public List<Vector3Int> shipCoordinate = new List<Vector3Int>();
+            for (int i = 0; i < mapSize; i++)
+            {
+                for (int j = 0; j < mapSize; j++)
+                {
+                    if (placement[i, j] == _shipID)
+                    {
+                        Map.Instance.ReviveArea(new Vector3Int(i, j, 0));
+                    }
+                }
+            }
         }
 
     }

@@ -68,7 +68,8 @@ public class Map : MonoBehaviour
                     GameController.Instance.CheckReady();
                     break;
                 case MapState.Attack:
-                    SetMarker(coordinate - new Vector3Int(0, mapSize, 0), Marker.Hit, true);
+                    GameController.Instance.Shoot(coordinate);
+                    GameController.Instance.EnemyTurn();
                     break;
                 default:
                     break;
@@ -115,18 +116,8 @@ public class Map : MonoBehaviour
     #endregion
 
     #region Marker
-    private void SetMarker(int index, Marker marker, bool radar)
+    public void SetMarker(Vector3Int coordinate, Marker marker)
     {
-        Vector3Int coordinate = new Vector3Int(index % mapSize, Mathf.FloorToInt(index / mapSize), 0);
-        SetMarker(coordinate, marker, radar);
-    }
-
-    private void SetMarker(Vector3Int coordinate, Marker marker, bool radar)
-    {
-        if (radar)
-        {
-            coordinate += new Vector3Int(0, mapSize, 0); // offset position
-        }
         markerLayer.SetTile(coordinate, markers[(int)marker]);
     }
     #endregion

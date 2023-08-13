@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour
     private GameState gameState;
     private int ShipID;
     private int[,] placement;
+    private bool[,] shots;
+    private Player[] players;
 
     private void Awake()
     {
@@ -32,6 +34,8 @@ public class GameController : MonoBehaviour
 
         UIManager.Instance.Rotate += Event_RotateShip;
         placement = new int[mapSize, mapSize];
+        shots = new bool[mapSize, mapSize];
+        players = new Player[2];
     }
 
     #region  GameState
@@ -42,6 +46,7 @@ public class GameController : MonoBehaviour
         Map.Instance.SetMapState(MapState.Placement);
         UpdateCursor();
         UIManager.Instance.MessageText("Place Your Ships");
+        Debug.Log("Place Your Ships");
     }
 
     private void TakeTurn()
@@ -49,20 +54,32 @@ public class GameController : MonoBehaviour
         gameState = GameState.Battle;
         Map.Instance.SetMapState(MapState.Attack);
         UIManager.Instance.MessageText("Your Turn");
+        Debug.Log("Your Turn");
     }
 
-    private void EnemyTurn()
+    private void EnemyPlacement()
     {
         gameState = GameState.EnemyTurn;
         Map.Instance.SetMapState(MapState.Disabled);
         UIManager.Instance.MessageText("Enemy Turn");
+        Debug.Log("Enemy Turn");
     }
 
-    private void ShowResult()
+    public void EnemyTurn()
+    {
+        gameState = GameState.EnemyTurn;
+        Map.Instance.SetMapState(MapState.Disabled);
+        UIManager.Instance.MessageText("Enemy Turn");
+        Debug.Log("Enemy Turn");
+        EnemyShoot();
+    }
+
+    public void GameOver()
     {
         gameState = GameState.GameOver;
         Map.Instance.SetMapState(MapState.Disabled);
         UIManager.Instance.MessageText("Game Over");
+        Debug.Log("Game Over");
     }
     #endregion
 
@@ -118,7 +135,7 @@ public class GameController : MonoBehaviour
     {
         if (ShipID >= battleShipsSO.Length)
         {
-            PlaceEnemyShips();
+            EnemyPlaceShips();
             TakeTurn();
         }
     }
@@ -154,26 +171,65 @@ public class GameController : MonoBehaviour
     }
     #endregion
 
+    #region Shoot
+    public void Shoot(Vector3Int coordinate)
+    {
+        if (placement[coordinate.x, coordinate.y] > 0)
+        {
+            Map.Instance.SetMarker(coordinate, Marker.Hit);
+        }
+        else
+        {
+            Map.Instance.SetMarker(coordinate, Marker.Miss);
+        }
+        players[0].GetHit(1);
+        shots[coordinate.x, coordinate.y] = true;
+
+    }
+
+    #endregion
+
     #region Enemy
-    private void PlaceEnemyShips()
+    private void EnemyPlaceShips()
     {
         ShipID = 0;
-        EnemyTurn();
+        EnemyPlacement();
         UpdateCursor();
 
-        int i = 0;
         while (ShipID < battleShipsSO.Length)
         {
             PlaceShipHorizontally = Random.value > 0.5f;
             Vector3Int randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(mapSize / 2, mapSize), 0);
             PlaceShip(randomCell, true);
+        }
+    }
 
-            i++;
-            if (i > 20)
+    private void EnemyShoot()
+    {
+        Vector3Int randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(0, mapSize / 2), 0);
+        if (shots[randomCell.x, randomCell.y]) { EnemyShoot(); return; }
+        Shoot(randomCell);
+        TakeTurn();
+    }
+    #endregion
+
+
+    private class Player
+    {
+        private int PlayerHealth;
+
+        public void SetHealth(int amount)
+        {
+            PlayerHealth = amount;
+        }
+
+        public void GetHit(int amount)
+        {
+            PlayerHealth -= amount;
+            if (PlayerHealth <= 0)
             {
-                return;
+                GameController.Instance.GameOver();
             }
         }
     }
-    #endregion
 }

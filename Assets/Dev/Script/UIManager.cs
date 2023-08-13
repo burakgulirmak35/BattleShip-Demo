@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
     [Header("Game")]
+    [SerializeField] private GameObject panelGame;
     [SerializeField] private TextMeshProUGUI txtMessage;
     [Space]
     [SerializeField] private Button btn_Rotate;
@@ -35,8 +36,8 @@ public class UIManager : MonoBehaviour
         Instance = this;
         btn_Rotate.onClick.AddListener(BtnRotate);
         btn_Restart.onClick.AddListener(BtnRestart);
-        UpdateText(0, 0);
         panelGameOver.SetActive(false);
+        UpdateText(0, 0);
     }
 
     public void MessageText(string _message)
@@ -52,6 +53,7 @@ public class UIManager : MonoBehaviour
         txt_totalMissCount.text = "MissCount: " + _missCount.ToString();
         txt_totalShotCount.text = "ShotCount: " + _hitCount + _missCount;
         txt_time.text = "Time: " + _time;
+        panelGame.SetActive(false);
         panelGameOver.SetActive(true);
     }
 

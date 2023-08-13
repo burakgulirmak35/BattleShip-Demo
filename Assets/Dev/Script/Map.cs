@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 public enum Marker
 {
@@ -83,7 +84,7 @@ public class Map : MonoBehaviour
         cursorLayer.ClearAllTiles();
         cursorLayer.SetTile(coordinate, cursorTile);
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             switch (mapState)
             {

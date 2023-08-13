@@ -75,11 +75,20 @@ public class GameController : MonoBehaviour
         EnemyShoot();
     }
 
-    public void GameOver()
+    public void GameOver(int playerID)
     {
         gameState = GameState.GameOver;
         Map.Instance.SetMapState(MapState.Disabled);
         UIManager.Instance.MessageText("Game Over");
+        if (playerID == 1)
+        {
+            UIManager.Instance.EndGame("You Win");
+        }
+        else
+        {
+            UIManager.Instance.EndGame("You Lost");
+        }
+
     }
     #endregion
 
@@ -160,7 +169,7 @@ public class GameController : MonoBehaviour
         if (players[targetPlayerID].isHit(coordinate))
         {
             Map.Instance.SetMarker(coordinate, Marker.Hit);
-            if (players[targetPlayerID].isGameOver()) { GameOver(); return; }
+            if (players[targetPlayerID].isGameOver()) { GameOver(targetPlayerID); return; }
             if (targetPlayerID == 1) { TakeTurn(); }
             else { EnemyTurn(); }
         }

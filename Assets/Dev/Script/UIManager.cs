@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     public void MessageText(string _message)
     {
         txt_Message.text = _message;
+        Debug.Log(_message);
     }
 
     private void BtnRotate()

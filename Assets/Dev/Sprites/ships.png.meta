@@ -180,13 +180,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Muhrip_v
+      name: cruiser_v
       rect:
         serializedVersion: 2
-        x: 113
-        y: 275
-        width: 31
-        height: 125
+        x: 38
+        y: 306
+        width: 32
+        height: 94
       alignment: 9
       pivot: {x: 0.5, y: 0.83}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -243,13 +243,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: muhrip_h
+      name: cruiser_h
       rect:
         serializedVersion: 2
-        x: 276
-        y: 331
-        width: 124
-        height: 31
+        x: 306
+        y: 256
+        width: 94
+        height: 32
       alignment: 9
       pivot: {x: 0.1667, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -295,12 +295,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Muhrip_v: 3756452822079432277
       carrier_h: -1686280522751478238
       carrier_v: -4030252921692450870
-      muhrip_h: 9204135808654416287
-      scout_h: 1357911645972831016
-      scout_v: 9204135808654416287
+      cruiser_h: 9204135808654416287
+      cruiser_v: 3756452822079432277
+      scout_h: -66049525997918889
+      scout_v: 1357911645972831016
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

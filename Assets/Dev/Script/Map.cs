@@ -93,7 +93,7 @@ public class Map : MonoBehaviour
                     GameController.Instance.CheckReady();
                     break;
                 case MapState.Attack:
-                    GameController.Instance.Shoot(coordinate, 1);
+                    GameController.Instance.Shoot(coordinate, 0, 1);
                     break;
                 default:
                     break;

@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour
         UIManager.Instance.MessageText("Place Your Ships");
     }
 
-    private void TakeTurn()
+    private void PlayerTurn()
     {
         gameState = GameState.Battle;
         Map.Instance.SetMapState(MapState.Attack);
@@ -138,7 +138,7 @@ public class GameController : MonoBehaviour
         if (ShipID >= battleShipsSO.Length)
         {
             EnemyPlaceShips();
-            TakeTurn();
+            PlayerTurn();
         }
     }
     #endregion
@@ -163,23 +163,36 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region Shoot
-    public void Shoot(Vector3Int coordinate, int targetPlayerID)
+    public void Shoot(Vector3Int coordinate, int playerID, int targetPlayerID)
     {
         if (shots[coordinate.x, coordinate.y]) { UIManager.Instance.MessageText("Buraya zaten attin"); return; }
         if (players[targetPlayerID].isHit(coordinate))
         {
             Map.Instance.SetMarker(coordinate, Marker.Hit);
             if (players[targetPlayerID].isGameOver()) { GameOver(targetPlayerID); return; }
-            if (targetPlayerID == 1) { TakeTurn(); }
-            else { EnemyTurn(); }
+            players[playerID].shotResult(true);
+            PassTurn(playerID);
         }
         else
         {
-            if (targetPlayerID == 1) { EnemyTurn(); }
-            else { TakeTurn(); }
+            players[playerID].shotResult(false);
             Map.Instance.SetMarker(coordinate, Marker.Miss);
+            PassTurn(targetPlayerID);
         }
         shots[coordinate.x, coordinate.y] = true;
+    }
+
+    private void PassTurn(int playerID)
+    {
+        switch (playerID)
+        {
+            case 0:
+                PlayerTurn();
+                break;
+            case 1:
+                EnemyTurn();
+                break;
+        }
     }
 
     #endregion
@@ -203,7 +216,7 @@ public class GameController : MonoBehaviour
     {
         Vector3Int _randomCell = new Vector3Int(Random.Range(0, mapSize), Random.Range(0, mapSize / 2), 0);
         if (shots[_randomCell.x, _randomCell.y]) { EnemyShoot(); return; }
-        Shoot(_randomCell, 0);
+        Shoot(_randomCell, 1, 0);
     }
     #endregion
 
@@ -213,6 +226,15 @@ public class GameController : MonoBehaviour
         private int[] hit;
         private int lostShipCount;
         private int mapSize;
+
+        private int hitCount;
+        private int missCount;
+
+        public void shotResult(bool hit)
+        {
+            if (hit) { hitCount++; }
+            else { missCount++; }
+        }
 
         public void SetPlacemant(int _mapSize)
         {
